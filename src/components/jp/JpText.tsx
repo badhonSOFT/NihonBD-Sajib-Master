@@ -16,10 +16,10 @@ export function parseJp(markup: string): Token[] {
   for (const m of markup.matchAll(RE)) {
     if (m.index! > last) out.push({ type: "text", text: markup.slice(last, m.index) });
     if (m[1] !== undefined) {
-      const [surface, reading = "", romaji = "", bn = ""] = m[1].split("|");
+      const [surface = "", reading = "", romaji = "", bn = ""] = m[1].split("|");
       out.push({ type: "word", surface, reading, romaji, bn });
     } else {
-      out.push({ type: "target", text: m[2] });
+      out.push({ type: "target", text: m[2] ?? "" });
     }
     last = m.index! + m[0].length;
   }

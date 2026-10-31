@@ -169,4 +169,4 @@ export function nextNat(now: Date) {
 
 const BN_DIGITS = "০১২৩৪৫৬৭৮৯";
 export const toBn = (n: number | string) =>
-  String(n).replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)]);
+  String(n).replace(/[0-9]/g, (d) => BN_DIGITS[Number(d)] ?? d);

@@ -254,9 +254,9 @@ const n5Demo: Exam = {
   free: true,
   title: "JLPT N5 Free Demo Test",
   titleBn: "JLPT N5 ফ্রি ডেমো টেস্ট",
-  vocab: { durationMin: 5, questions: [n5Vocab[0], n5Vocab[3], n5Vocab[4], n5Vocab[6]] },
+  vocab: { durationMin: 5, questions: n5Vocab.filter((_, i) => [0, 3, 4, 6].includes(i)) },
   reading: { ...n5Mock.reading, durationMin: 8, questions: n5Reading.slice(0, 2) },
-  listening: { ...n5Mock.listening, durationMin: 5, questions: [n5Listening[0]] },
+  listening: { ...n5Mock.listening, durationMin: 5, questions: n5Listening.slice(0, 1) },
 };
 
 // ---------------- JLPT N4 Mock 1 ----------------

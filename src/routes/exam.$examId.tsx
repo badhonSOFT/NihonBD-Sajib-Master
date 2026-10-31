@@ -112,7 +112,7 @@ function ExamPage() {
       const i = ORDER.indexOf(phase);
       if (auto) toast.warning(`সময় শেষ — ${SECTION_LABEL_BN[phase]} সেকশন অটো-সাবমিট ও লক হয়েছে`);
       if (i === ORDER.length - 1) finish();
-      else enterSection(ORDER[i + 1]);
+      else enterSection(ORDER[i + 1]!);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [phase, finish],
@@ -140,6 +140,7 @@ function ExamPage() {
   if (phase === "intro") return <Intro exam={exam} onStart={start} locked={!exam.free && !user} />;
 
   const qs = sectionQuestions(exam, phase);
+  const cur = qs[Math.min(qIndex, qs.length - 1)]!;
   const remaining = Math.max(0, deadline - now);
   const mm = String(Math.floor(remaining / 60000)).padStart(2, "0");
   const ss = String(Math.floor((remaining % 60000) / 1000)).padStart(2, "0");
@@ -193,10 +194,10 @@ function ExamPage() {
         {phase === "vocab" && (
           <div className="mx-auto max-w-3xl">
             <QuestionView
-              q={qs[qIndex]}
+              q={cur}
               index={offset + qIndex + 1}
-              chosen={answers[qs[qIndex].id]}
-              onChoose={(i) => choose(qs[qIndex].id, i)}
+              chosen={answers[cur.id]}
+              onChoose={(i) => choose(cur.id, i)}
               mode="exam"
               className="shadow-soft"
             />
