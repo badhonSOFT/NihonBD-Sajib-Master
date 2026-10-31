@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BooksRouteImport } from './routes/books'
+import { Route as FeaturesRouteImport } from './routes/features'
+import { Route as MockTestsRouteImport } from './routes/mock-tests'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ExamExamIdRouteImport } from './routes/exam.$examId'
+import { Route as ResultsAttemptIdRouteImport } from './routes/results.$attemptId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BooksRoute = BooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MockTestsRoute = MockTestsRouteImport.update({
+  id: '/mock-tests',
+  path: '/mock-tests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamExamIdRoute = ExamExamIdRouteImport.update({
+  id: '/exam/$examId',
+  path: '/exam/$examId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsAttemptIdRoute = ResultsAttemptIdRouteImport.update({
+  id: '/results/$attemptId',
+  path: '/results/$attemptId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/mock-tests': typeof MockTestsRoute
+  '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/mock-tests': typeof MockTestsRoute
+  '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/books': typeof BooksRoute
+  '/features': typeof FeaturesRoute
+  '/mock-tests': typeof MockTestsRoute
+  '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
+  id:
+    | '__root__'
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BooksRoute: typeof BooksRoute
+  FeaturesRoute: typeof FeaturesRoute
+  MockTestsRoute: typeof MockTestsRoute
+  PricingRoute: typeof PricingRoute
+  ExamExamIdRoute: typeof ExamExamIdRoute
+  ResultsAttemptIdRoute: typeof ResultsAttemptIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/books': {
+      id: '/books'
+      path: '/books'
+      fullPath: '/books'
+      preLoaderRoute: typeof BooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mock-tests': {
+      id: '/mock-tests'
+      path: '/mock-tests'
+      fullPath: '/mock-tests'
+      preLoaderRoute: typeof MockTestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam/$examId': {
+      id: '/exam/$examId'
+      path: '/exam/$examId'
+      fullPath: '/exam/$examId'
+      preLoaderRoute: typeof ExamExamIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results/$attemptId': {
+      id: '/results/$attemptId'
+      path: '/results/$attemptId'
+      fullPath: '/results/$attemptId'
+      preLoaderRoute: typeof ResultsAttemptIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BooksRoute: BooksRoute,
+  FeaturesRoute: FeaturesRoute,
+  MockTestsRoute: MockTestsRoute,
+  PricingRoute: PricingRoute,
+  ExamExamIdRoute: ExamExamIdRoute,
+  ResultsAttemptIdRoute: ResultsAttemptIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
