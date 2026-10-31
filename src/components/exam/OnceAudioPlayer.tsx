@@ -35,7 +35,7 @@ export function OnceAudioPlayer({ lines }: { lines: AudioLine[] }) {
     uttRef.current = lines.map((l, i) => {
       const u = new SpeechSynthesisUtterance(l.text);
       u.lang = "ja-JP";
-      if (voices.length) u.voice = voices[l.speaker === "男" && voices[1] ? 1 : 0];
+      if (voices.length) u.voice = voices[l.speaker === "男" && voices[1] ? 1 : 0] ?? null;
       u.rate = 0.88;
       u.pitch = l.speaker === "女" ? 1.25 : l.speaker === "男" ? 0.75 : 1;
       u.onstart = () => setProgress(i / total);
