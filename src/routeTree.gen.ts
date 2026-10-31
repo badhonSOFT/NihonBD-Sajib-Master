@@ -14,6 +14,8 @@ import { Route as BooksRouteImport } from './routes/books'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as MockTestsRouteImport } from './routes/mock-tests'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ExamExamIdRouteImport } from './routes/exam.$examId'
+import { Route as ResultsAttemptIdRouteImport } from './routes/results.$attemptId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,16 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamExamIdRoute = ExamExamIdRouteImport.update({
+  id: '/exam/$examId',
+  path: '/exam/$examId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsAttemptIdRoute = ResultsAttemptIdRouteImport.update({
+  id: '/results/$attemptId',
+  path: '/results/$attemptId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
   '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
   '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +78,37 @@ export interface FileRoutesById {
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
   '/pricing': typeof PricingRoute
+  '/exam/$examId': typeof ExamExamIdRoute
+  '/results/$attemptId': typeof ResultsAttemptIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/books' | '/features' | '/mock-tests' | '/pricing'
+  fullPaths:
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/books' | '/features' | '/mock-tests' | '/pricing'
-  id: '__root__' | '/' | '/books' | '/features' | '/mock-tests' | '/pricing'
+  to:
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
+  id:
+    | '__root__'
+    | '/'
+    | '/books'
+    | '/features'
+    | '/mock-tests'
+    | '/pricing'
+    | '/exam/$examId'
+    | '/results/$attemptId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +117,8 @@ export interface RootRouteChildren {
   FeaturesRoute: typeof FeaturesRoute
   MockTestsRoute: typeof MockTestsRoute
   PricingRoute: typeof PricingRoute
+  ExamExamIdRoute: typeof ExamExamIdRoute
+  ResultsAttemptIdRoute: typeof ResultsAttemptIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exam/$examId': {
+      id: '/exam/$examId'
+      path: '/exam/$examId'
+      fullPath: '/exam/$examId'
+      preLoaderRoute: typeof ExamExamIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results/$attemptId': {
+      id: '/results/$attemptId'
+      path: '/results/$attemptId'
+      fullPath: '/results/$attemptId'
+      preLoaderRoute: typeof ResultsAttemptIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +181,8 @@ const rootRouteChildren: RootRouteChildren = {
   FeaturesRoute: FeaturesRoute,
   MockTestsRoute: MockTestsRoute,
   PricingRoute: PricingRoute,
+  ExamExamIdRoute: ExamExamIdRoute,
+  ResultsAttemptIdRoute: ResultsAttemptIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
