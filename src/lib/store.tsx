@@ -205,8 +205,8 @@ export const actions = {
     const attempt: Attempt = { ...a, id: uid(), date: Date.now(), email: db.session };
     setDB((d) => {
       let users = d.users;
-      if (d.session && d.users[d.session]) {
-        const u = d.users[d.session];
+      const u = d.session ? d.users[d.session] : undefined;
+      if (u) {
         const fresh = mistakes.map((m) => ({ ...m, date: attempt.date }));
         const ids = new Set(fresh.map((m) => m.qid));
         users = {
@@ -217,6 +217,17 @@ export const actions = {
       return { ...d, users, attempts: [attempt, ...d.attempts] };
     });
     return attempt.id;
+  },
+  /** Demo helper: +10 tickets and 30 days VIP. */
+  demoBalance() {
+    const email = load().session;
+    if (!email) return;
+    const now = Date.now();
+    updateUser(email, (u) => ({
+      ...u,
+      tickets: u.tickets + 10,
+      monthlyUntil: Math.max(u.monthlyUntil, now) + 30 * 24 * 60 * 60 * 1000,
+    }));
   },
   removeMistake(qid: string) {
     const email = load().session;

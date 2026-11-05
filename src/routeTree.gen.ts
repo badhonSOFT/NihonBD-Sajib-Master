@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as MockTestsRouteImport } from './routes/mock-tests'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ExamExamIdRouteImport } from './routes/exam.$examId'
 import { Route as ResultsAttemptIdRouteImport } from './routes/results.$attemptId'
@@ -37,6 +38,11 @@ const MockTestsRoute = MockTestsRouteImport.update({
   path: '/mock-tests',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/books': typeof BooksRoute
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/exam/$examId': typeof ExamExamIdRoute
   '/results/$attemptId': typeof ResultsAttemptIdRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/books': typeof BooksRoute
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/exam/$examId': typeof ExamExamIdRoute
   '/results/$attemptId': typeof ResultsAttemptIdRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/books': typeof BooksRoute
   '/features': typeof FeaturesRoute
   '/mock-tests': typeof MockTestsRoute
+  '/portal': typeof PortalRoute
   '/pricing': typeof PricingRoute
   '/exam/$examId': typeof ExamExamIdRoute
   '/results/$attemptId': typeof ResultsAttemptIdRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/books'
     | '/features'
     | '/mock-tests'
+    | '/portal'
     | '/pricing'
     | '/exam/$examId'
     | '/results/$attemptId'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/books'
     | '/features'
     | '/mock-tests'
+    | '/portal'
     | '/pricing'
     | '/exam/$examId'
     | '/results/$attemptId'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/books'
     | '/features'
     | '/mock-tests'
+    | '/portal'
     | '/pricing'
     | '/exam/$examId'
     | '/results/$attemptId'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   BooksRoute: typeof BooksRoute
   FeaturesRoute: typeof FeaturesRoute
   MockTestsRoute: typeof MockTestsRoute
+  PortalRoute: typeof PortalRoute
   PricingRoute: typeof PricingRoute
   ExamExamIdRoute: typeof ExamExamIdRoute
   ResultsAttemptIdRoute: typeof ResultsAttemptIdRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   BooksRoute: BooksRoute,
   FeaturesRoute: FeaturesRoute,
   MockTestsRoute: MockTestsRoute,
+  PortalRoute: PortalRoute,
   PricingRoute: PricingRoute,
   ExamExamIdRoute: ExamExamIdRoute,
   ResultsAttemptIdRoute: ResultsAttemptIdRoute,
