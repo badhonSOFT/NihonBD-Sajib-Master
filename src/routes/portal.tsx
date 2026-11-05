@@ -100,7 +100,7 @@ function PortalPage() {
               ["library", "লাইব্রেরি"],
               ["history", "ইতিহাস"],
               ["payments", "পেমেন্ট"],
-            ].map(([v = "", l]) => (
+            ].map(([v, l]) => [v ?? "", l] as const).map(([v, l]) => (
               <TabsTrigger key={v} value={v} className="rounded-xl font-bn">{l}</TabsTrigger>
             ))}
           </TabsList>
