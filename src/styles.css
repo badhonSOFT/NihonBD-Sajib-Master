@@ -220,3 +220,18 @@
 @utility animate-fade-up {
   animation: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+
+@keyframes kanji-reveal {
+  from { clip-path: inset(0 100% 0 0); color: var(--color-primary); }
+  70% { color: var(--color-primary); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.kanji-reveal { animation: kanji-reveal 1.6s ease-out both; }
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
+.animate-shake { animation: shake 0.5s ease-in-out; }

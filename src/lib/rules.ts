@@ -82,6 +82,13 @@ export const canTakeExam = (u: Entitlements | null, now: number) =>
 export const canReadChapter = (u: Entitlements | null, chapterNo: number, now: number) =>
   chapterNo <= 2 || (!!u && (u.tickets > 0 || hasMonthly(u, now) || u.bookUntil > now));
 
+/** Theory lessons 2+ and practice drills beyond the free set need any active purchase. */
+export const hasPremium = (u: Entitlements | null, now: number) =>
+  !!u && (u.tickets > 0 || hasMonthly(u, now) || u.weeklyUntil > now || u.bookUntil > now);
+
+/** Free practice questions per skill before a purchase is needed. */
+export const FREE_DRILLS_PER_SKILL = 3;
+
 /** Starting a paid exam spends one ticket unless the monthly pass is active. */
 export function consumeExamEntry<T extends Entitlements>(u: T, now: number): T {
   if (hasMonthly(u, now)) return u;

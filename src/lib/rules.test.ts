@@ -70,3 +70,15 @@ describe("exam calendar", () => {
     expect([d.getFullYear(), d.getMonth(), d.getDate()]).toEqual([2026, 11, 6]);
   });
 });
+
+import { hasPremium } from "./rules";
+describe("premium access", () => {
+  const base = { tickets: 0, monthlyUntil: 0, weeklyUntil: 0, bookUntil: 0 };
+  it("locks lesson 2+ for a user with nothing bought", () => {
+    expect(hasPremium(base, 1000)).toBe(false);
+    expect(hasPremium(null, 1000)).toBe(false);
+  });
+  it("unlocks with an active weekly pass", () => {
+    expect(hasPremium({ ...base, weeklyUntil: 2000 }, 1000)).toBe(true);
+  });
+});

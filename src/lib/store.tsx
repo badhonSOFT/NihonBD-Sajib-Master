@@ -34,6 +34,7 @@ export interface Payment {
   sender: string;
   trxId: string;
   date: number;
+  status?: "approved" | "rejected";
 }
 
 export interface User extends Entitlements {
@@ -44,6 +45,9 @@ export interface User extends Entitlements {
   createdAt: number;
   mistakes: Mistake[];
   payments: Payment[];
+  blocked?: boolean;
+  saved?: string[];
+  roadmap?: { target: 90 | 150; diag?: Record<string, number>; done: number[] };
 }
 
 export interface Attempt {
@@ -63,6 +67,7 @@ export interface DB {
   users: Record<string, User>;
   session: string | null;
   attempts: Attempt[];
+  announcement?: string;
 }
 
 const DB_KEY = "nihonbd:db:v1";
@@ -177,6 +182,7 @@ export const actions = {
     const email = emailRaw.trim().toLowerCase();
     const u = load().users[email];
     if (!u || u.pwHash !== hash(password)) throw new Error("ইমেইল বা পাসওয়ার্ড সঠিক নয়।");
+    if (u.blocked) throw new Error("এই অ্যাকাউন্টটি ব্লক করা হয়েছে। সাপোর্টে যোগাযোগ করুন।");
     setDB((d) => ({ ...d, session: email }));
   },
   logout() {
@@ -228,6 +234,58 @@ export const actions = {
       tickets: u.tickets + 10,
       monthlyUntil: Math.max(u.monthlyUntil, now) + 30 * 24 * 60 * 60 * 1000,
     }));
+  },
+  logMistake(qid: string, examId: string, chosen: number | null) {
+    const email = load().session;
+    if (!email) return;
+    updateUser(email, (u) => ({
+      ...u,
+      mistakes: [{ qid, examId, chosen, date: Date.now() }, ...u.mistakes.filter((m) => m.qid !== qid)],
+    }));
+  },
+  toggleSaved(qid: string) {
+    const email = load().session;
+    if (!email) return;
+    updateUser(email, (u) => {
+      const s = u.saved ?? [];
+      return { ...u, saved: s.includes(qid) ? s.filter((x) => x !== qid) : [qid, ...s] };
+    });
+  },
+  setRoadmap(patch: Partial<NonNullable<User["roadmap"]>>) {
+    const email = load().session;
+    if (!email) return;
+    updateUser(email, (u) => ({ ...u, roadmap: { target: 90, done: [], ...u.roadmap, ...patch } }));
+  },
+  // ----- admin -----
+  adminUpdateUser(email: string, fn: (u: User) => User) {
+    updateUser(email, fn);
+  },
+  adminResetPassword(email: string, password: string) {
+    updateUser(email, (u) => ({ ...u, pwHash: hash(password) }));
+  },
+  adminSetPaymentStatus(email: string, payId: string, status: "approved" | "rejected") {
+    updateUser(email, (u) => {
+      const p = u.payments.find((x) => x.id === payId);
+      if (!p || (p.status ?? "approved") === status) return u;
+      const next = { ...u, payments: u.payments.map((x) => (x.id === payId ? { ...x, status } : x)) };
+      // Rejecting removes the tickets that package gave; approving again re-applies it.
+      if (status === "rejected") {
+        const t = { p20: 1, p30: 2, p50: 5, p100: 0 }[p.pkg];
+        return { ...next, tickets: Math.max(0, next.tickets - t) };
+      }
+      return applyPackage(next, p.pkg, Date.now());
+    });
+  },
+  setAnnouncement(text: string) {
+    setDB((d) => ({ ...d, announcement: text }));
+  },
+  exportAll(): string {
+    return JSON.stringify(load(), null, 2);
+  },
+  importAll(json: string) {
+    const parsed = JSON.parse(json) as DB;
+    if (!parsed || typeof parsed !== "object" || !parsed.users) throw new Error("Invalid backup file");
+    setDB(() => ({ ...EMPTY, ...parsed }));
   },
   removeMistake(qid: string) {
     const email = load().session;
